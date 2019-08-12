@@ -26,7 +26,7 @@ while True:
     ret, img = cap.read()                                                       # Read the camera object
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)                                # Convert the Camera to gray
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)                         # Detect the faces and store the positions
-    
+    sinal = False
     for (x, y, w, h) in faces:                                                  # Frames  LOCATION X, Y  WIDTH, HEIGHT
         
         # Eyes should be inside the face.
@@ -36,9 +36,18 @@ while True:
             ID, conf = recognise.predict(gray_face)                             # Determine the ID of the photo
             NAME = NameFind.ID2Name(ID, conf)
             NameFind.DispID(x, y, w, h, NAME, gray)
-                  
+            if conf != 0:
+                sinal = True
+            elif conf < 0:
+                sinal = False
     cv2.imshow('LBPH Face Recognition System', gray)                            # Show the video
-    
+    def sinalizar(sinal):
+        if sinal == True:
+            print('Porta aberta')
+        elif sinal == False:
+            print('Porta trancada ')
+            # Show the video
+sinalizar(sinal)
     if cv2.waitKey(1) & 0xFF == ord('q'):                                       # Quit if the key is Q
         break
 

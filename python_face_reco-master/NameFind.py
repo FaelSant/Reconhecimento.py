@@ -1,5 +1,4 @@
-#     ----------- FUNCTION TO READ THE FILE AND ADD THE NAMES AND IDs IN TO TUPLES
-
+# -*- coding: utf-8 -*-
 import cv2 #Video Capture Library 
 import math # Image Rotation Library
 import time #Time count Library
@@ -43,20 +42,14 @@ with open('Names.txt') as f:
                 last_string = int(s) 
                 print("A base possui: " + str(last_string) + " " + "pessoas" )
 
-def ID2Name(ID, conf):
-    
+def ID2Name(ID,conf):
     if ID>=1 and ID<=last_string:
-        NameString = "Name: " + Names[ID-1] + " Confidence: " + (str(round(conf)) )                                # Find the Name using the index of the ID
+        NameString = "Nome: " + Names[ID-1] + " Confianca: " + (str(round(conf))) # Find the Name using the index of the ID
     else:
-        NameString = " Face Not Recognised "  # Find the Name using the index of the ID
-
+        NameString = " Face nao reconhecida "   # Find the Name using the index of the ID
     return NameString
-
-#     ------------------- THIS FUNCTION READ THE FILE AND ADD THE NAME TO THE END OF THE FILE  -----------------
-
-
 def AddName():
-    Name = input('Enter Your Name ')
+    Name = input('Entre com seu nome: ')
     Info = open("Names.txt", "r+")
     ID = ((sum(1 for line in Info))+1)
     Info.write(str(ID) + " " + "," + " " + Name + "\n")

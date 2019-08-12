@@ -33,3 +33,16 @@ while True:
         break
 cap.release()
 cv2.destroyAllWindows()
+
+'''
+import pyserial
+
+var = pyserial.get(porta)
+def jjj(var)
+
+    var
+    logiga
+    
+outravariavel = jjj()
+pyserial.dset(outravariavel)
+'''

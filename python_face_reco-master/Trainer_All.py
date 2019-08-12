@@ -7,7 +7,7 @@ import numpy as np                                      # importing Numpy librar
 from PIL import Image                                   # importing Image library
 
 
-EigenFace = cv2.face.EigenFaceRecognizer_create(15)      # creating EIGEN FACE RECOGNISER
+EigenFace = cv2.face.EigenFaceRecognizer_create(50,4000)      # creating EIGEN FACE RECOGNISER
 FisherFace = cv2.face.FisherFaceRecognizer_create(2)     # Create FISHER FACE RECOGNISER
 LBPHFace = cv2.face.LBPHFaceRecognizer_create(1, 1, 7,7) # Create LBPH FACE RECOGNISER
 
@@ -16,20 +16,23 @@ def getImageWithID (path):
     imagePaths = [os.path.join(path, f) for f in os.listdir(path)]
     FaceList = []
     IDs = []
-    for imagePath in imagePaths:
-        faceImage = Image.open(imagePath).convert('L')  # Open image and convert to gray
-        faceImage = faceImage.resize((110,110))         # resize the image so the EIGEN recogniser can be trained
-        faceNP = np.array(faceImage, 'uint8')           # convert the image to Numpy array
-        ID = int(os.path.split(imagePath)[-1].split('.')[1])    # Retreave the ID of the array
-        FaceList.append(faceNP)                         # Append the Numpy Array to the list
-        IDs.append(ID)                                  # Append the ID to the IDs list
-        cv2.imshow('Training Set', faceNP)              # Show the images in the list
-        cv2.waitKey(1)
-    return np.array(IDs), FaceList                      # The IDs are converted in to a Numpy array
+    try:
+        for imagePath in imagePaths:
+            faceImage = Image.open(imagePath).convert('L')  # Open image and convert to gray
+            faceImage = faceImage.resize((110,110))         # resize the image so the EIGEN recogniser can be trained
+            faceNP = np.array(faceImage, 'uint8')           # convert the image to Numpy array
+            ID = int(os.path.split(imagePath)[-1].split('.')[1])    # Retreave the ID of the array
+            FaceList.append(faceNP)                         # Append the Numpy Array to the list
+            IDs.append(ID)                                  # Append the ID to the IDs list
+            cv2.imshow('Treinando', faceNP)              # Show the images in the list
+            cv2.waitKey(1)
+        return np.array(IDs), FaceList                      # The IDs are converted in to a Numpy array
+    except:
+        print('Houve um erro')
 IDs, FaceList = getImageWithID(path)
 
 # ------------------------------------ TRAING THE RECOGNISER ----------------------------------------
-print('TRAINING......')
+print('TREINANDO......')
 EigenFace.train(FaceList, IDs)                          # The recongniser is trained using the images
 print('EIGEN FACE RECOGNISER COMPLETE...')
 EigenFace.save('Recogniser/trainingDataEigan.xml')
@@ -42,5 +45,7 @@ LBPHFace.train(FaceList, IDs)
 print('LBPH FACE RECOGNISER COMPLETE...')
 LBPHFace.save('Recogniser/trainingDataLBPH.xml')
 print ('ALL XML FILES SAVED...')
+
+
 
 cv2.destroyAllWindows()

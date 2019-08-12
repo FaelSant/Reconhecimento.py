@@ -19,8 +19,10 @@ ID = 0
 while True:
     ret, img = cap.read()                                                       # Read the camera object
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)                                # Convert the Camera to gray
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)                         # Detect the faces and store the positions
-    for (x, y, w, h) in faces:                                                  # Frames  LOCATION X, Y  WIDTH, HEIGHT
+    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+    sinal = False                           # Detect the faces and store the positions
+    for (x, y, w, h) in faces:
+             # Frames  LOCATION X, Y  WIDTH, HEIGHT
         gray_face = cv2.resize((gray[y: y+h, x: x+w]), (110, 110))              # The Face is isolated and cropped
     # -------- BY CONFIRMING THE EYES ARE INSIDE THE FACE BETTER FACE RECOGNITION IS GAINED ----------------
         eyes = eye_cascade.detectMultiScale(gray_face)
@@ -28,8 +30,22 @@ while True:
             ID, conf = recognise.predict(gray_face)                              # Determine the ID of the photo
             NAME = NameFind.ID2Name(ID ,conf)      
             NameFind.DispID(x, y, w, h, NAME, gray)
-    cv2.imshow('FisherFace Face Recognition System', gray)                       # Show the video
-    if cv2.waitKey(1) & 0xFF == ord('q'):                                        # Quit if the key is Q
+            if conf > 4000.0:
+                sinal = True
+            elif conf < 4000.0:
+                sinal = False
+            print(conf)
+    cv2.imshow('FisherFace Face Recognition System', gray)
+    if cv2.waitKey(1) & 0xFF == ord('q'):  # Quit if the key is Q
         break
+    # Show the video
+def sinalizar(sinal):
+        if sinal == True:
+            print('Porta aberta')
+        elif sinal == False:
+            print('Porta trancada ')
+            # Show the video
+sinalizar(sinal)
+
 cap.release()
 cv2.destroyAllWindows()
