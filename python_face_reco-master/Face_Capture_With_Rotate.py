@@ -20,23 +20,20 @@ cap = cv2.VideoCapture(0)                                                       
 while Count < 40:
     ret, img = cap.read()
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.4,minNeighbors=5,minSize=(30,30),flags = cv2.CASCADE_SCALE_IMAGE)
     faces2 = face_cascade_alt.detectMultiScale(gray,1.3,5)
-    classificadores = [faces2,faces]                                               # Convert the Camera to grayScale
-    if np.average(gray) > 110:                                                                      # Testing the brightness of the image
-        for classificadores in classificadores:
-            for (x, y, w, h) in classificadores:                                                                  # Frames  LOCATION X, Y  WIDTH, HEIGHT
-                FaceImage = gray[y - int(h / 2): y + int(h * 1.5), x - int(x / 2): x + int(w * 1.5)]    # The Face is isolated and cropped
-                Img = (NameFind.DetectEyes(FaceImage))
-                cv2.putText(gray, "Face Detectada", (x+int((w/2)), y-5), cv2.FONT_HERSHEY_DUPLEX, .4, WHITE)
-                if Img is not None:
-                    frame = Img                                                                         # Show the detected faces
-                else:
-                    frame = gray[y: y+h, x: x+w]
-                cv2.imwrite("dataSet/User." + str(ID) + "." + str(Count) + ".jpg", frame)
-                cv2.waitKey(1)
-                cv2.imshow("CAPTURED PHOTO", frame)                                                     # show the captured image
-                Count = Count + 1
+    for (x, y, w, h) in faces:                                                                  # Frames  LOCATION X, Y  WIDTH, HEIGHT
+        FaceImage = gray[y - int(h / 2): y + int(h * 1.5), x - int(x / 2): x + int(w * 1.5)]    # The Face is isolated and cropped
+        Img = (NameFind.DetectEyes(FaceImage))
+        cv2.putText(gray, "Face Detectada", (x+int((w/2)), y-5), cv2.FONT_HERSHEY_DUPLEX, .4, WHITE)
+        if Img is not None:
+            frame = Img                                                                         # Show the detected faces
+        else:
+            frame = gray[y: y+h, x: x+w]
+            cv2.imwrite("dataSet/User." + str(ID) + "." + str(Count) + ".jpg", frame)
+            cv2.waitKey(1)
+            cv2.imshow("CAPTURED PHOTO", frame)                                                     # show the captured image
+            Count = Count + 1
     cv2.imshow('Face Recognition System Capture Faces', gray)                                       # Show the video
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

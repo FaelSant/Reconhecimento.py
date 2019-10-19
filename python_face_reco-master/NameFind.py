@@ -45,6 +45,7 @@ with open('Names.txt') as f:
 def ID2Name(ID,conf):
     if ID>=1 and ID<=last_string:
         NameString = "Nome: " + Names[ID-1] + " Confianca: " + (str(round(conf))) # Find the Name using the index of the ID
+
     else:
         NameString = " Face nao reconhecida "   # Find the Name using the index of the ID
     return NameString
@@ -53,7 +54,7 @@ def AddName():
     Info = open("Names.txt", "r+")
     ID = ((sum(1 for line in Info))+1)
     Info.write(str(ID) + " " + "," + " " + Name + "\n")
-    print ("Name Stored in " + str(ID))
+    print ("Nome registrado em: " + str(ID))
     Info.close()
     return ID
 

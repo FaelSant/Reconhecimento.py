@@ -5,12 +5,9 @@ import os                                               # importing the OS for p
 import cv2                                              # importing the OpenCV library
 import numpy as np                                      # importing Numpy library
 from PIL import Image                                   # importing Image library
+'''984824763'''
 
-
-EigenFace = cv2.face.EigenFaceRecognizer_create(50,4000)      # creating EIGEN FACE RECOGNISER
-FisherFace = cv2.face.FisherFaceRecognizer_create(2)     # Create FISHER FACE RECOGNISER
-LBPHFace = cv2.face.LBPHFaceRecognizer_create(1, 1, 7,7) # Create LBPH FACE RECOGNISER
-
+EigenFace = cv2.face.EigenFaceRecognizer_create(100,4000)      # creating EIGEN FACE RECOGNISER
 path = 'dataSet'                                        # path to the photos
 def getImageWithID (path):
     imagePaths = [os.path.join(path, f) for f in os.listdir(path)]
@@ -37,15 +34,4 @@ EigenFace.train(FaceList, IDs)                          # The recongniser is tra
 print('EIGEN FACE RECOGNISER COMPLETE...')
 EigenFace.save('Recogniser/trainingDataEigan.xml')
 print('FILE SAVED..')
-FisherFace.train(FaceList, IDs)
-print('FISHER FACE RECOGNISER COMPLETE...')
-FisherFace.save('Recogniser/trainingDataFisher.xml')
-print('Fisher Face XML saved... ')
-LBPHFace.train(FaceList, IDs)
-print('LBPH FACE RECOGNISER COMPLETE...')
-LBPHFace.save('Recogniser/trainingDataLBPH.xml')
-print ('ALL XML FILES SAVED...')
-
-
-
 cv2.destroyAllWindows()
